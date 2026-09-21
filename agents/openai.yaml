@@ -1,6 +1,6 @@
 interface:
-  display_name: "论文翻译 · 高清图表 HTML"
-  short_description: "完整中文论文译稿，保留高清英文原图与原表，提供可缩放的网页阅读版"
-  default_prompt: "使用 $paper-translate-html 翻译这篇论文，生成中文 HTML 阅读版，保留高清英文原图和原表截图。"
+  display_name: "Paper Translation · HTML Reader"
+  short_description: "Chinese paper translations with original figures and zoom"
+  default_prompt: "Use $paper-translate-html to translate this paper into Simplified Chinese and create an HTML reader with high-resolution original English figures and tables."
 policy:
   allow_implicit_invocation: true
