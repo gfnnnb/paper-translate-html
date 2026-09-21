@@ -45,7 +45,7 @@ async function main(){
  const title=escape(options.title||'论文中文译稿');
  const css=fs.readFileSync(path.join(assets,'reader.css'),'utf8')+'\n'+fs.readFileSync(path.join(assets,'image_viewer.css'),'utf8');
  const script=fs.readFileSync(path.join(assets,'image_viewer.js'),'utf8');
- const html='<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+'</title><style>'+css+'</style></head><body><nav aria-label="章节目录"><strong>论文中文译稿</strong>'+toc.join('')+'</nav><main>'+content+'</main><script>'+script+'</script></body></html>';
+ const html='<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+title+'</title><style>'+css+'</style></head><body><nav aria-label="章节目录"><strong>Paper Reader</strong><span class="nav-subtitle">A little closer to the paper.</span><span class="nav-label">CONTENTS</span><div class="nav-links">'+toc.join('')+'</div></nav><main><header class="reader-header"><span>PAPER / TRANSLATION</span><span>TEXT · FIGURES · DETAILS</span></header>'+content+'</main><script>'+script+'</script></body></html>';
  fs.mkdirSync(path.dirname(output),{recursive:true});fs.writeFileSync(output,html,'utf8');
  console.log(JSON.stringify({output,embeddedImages:count,bytes:Buffer.byteLength(html)}));
 }

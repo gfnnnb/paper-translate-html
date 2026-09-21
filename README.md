@@ -4,6 +4,12 @@
 
 A Codex skill that turns English research papers into readable Chinese HTML documents. Less copying and formatting, more time for reading.
 
+![Paper Reader: a calm reading layout with chapter navigation and original figures](docs/preview-reading.png)
+
+[Explore the demo](examples/demo-zh.html) · [Compare the source](examples/source-en.md) · [Workflow guide](references/workflow.md)
+
+## What you get
+
 - **Complete translations:** covers the main text and appendices by default, preserving structure, numbering, and academic meaning.
 - **Original figures and tables:** preserves English labels, extracts original images where possible, and renders composite figures at high resolution.
 - **Comfortable reading:** chapter navigation, responsive layouts, click-to-zoom, and original-size viewing.
@@ -15,19 +21,13 @@ The AI assistant performs the translation. The scripts extract visual assets and
 
 These examples use original English and Chinese demonstration material created for this repository. All data are fictional, not research findings or performance benchmarks. Chinese text in the screenshots demonstrates the translated output.
 
-### 1. Readable text and chapter navigation
-
-![Chinese translation with chapter navigation](docs/preview-reading.png)
-
-### 2. Original English figures and tables
+### Original English figures and tables
 
 ![High-resolution English table preserved in the translation](docs/preview-table.png)
 
-### 3. Zoom into details, or read on a narrow screen
+### Zoom into details, or read on a narrow screen
 
 ![Image viewer with zoom controls](docs/preview-zoom.png)
-
-<img src="docs/preview-mobile.png" width="320" alt="Mobile reading layout">
 
 Download the [HTML demo](examples/demo-zh.html) and open it in your browser. GitHub's file view displays the source code. Compare the [English source](examples/source-en.md) with the [Chinese translation](examples/demo-zh.md).
 
@@ -77,6 +77,30 @@ npm test
 ```
 
 Open `examples/demo-zh.html`. See the [workflow guide](references/workflow.md) for figure extraction and custom build commands.
+
+## How it works
+
+| Step | What happens |
+| --- | --- |
+| Read | The assistant checks the PDF's structure, reading order, and figure boundaries. |
+| Translate | It translates the requested text and captions while preserving values, references, and original visuals. |
+| Package | Local scripts bundle the prepared Markdown and images into a standalone reader. |
+| Verify | The assistant checks coverage, visual quality, image zoom, and desktop and mobile layouts. |
+
+The default output language is Simplified Chinese. Repository documentation is in English; Chinese text in the demo shows the actual translation output.
+
+## Rebuild the previews
+
+The preview cards contain actual browser screenshots of the bundled demo. To regenerate them after changing the reader:
+
+```bash
+npm run demo
+npm install --no-save playwright
+npx playwright install chromium
+node scripts/capture_preview.cjs
+```
+
+The optional capture script also checks image loading, original-size viewing, zoom controls, scrolling, mobile navigation, and closing the viewer. Playwright is only needed to regenerate previews.
 
 ## Limitations
 
