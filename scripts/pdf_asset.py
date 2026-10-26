@@ -31,6 +31,14 @@ def main():
             image=images[key].image
             image.save(args.output)
             size=image.size
+            placements=[i for i in page.images if '/'+i['name']==key]
+            if args.bbox:
+                box=args.bbox
+            elif len(placements)==1:
+                i=placements[0]
+                box=[i['x0'],i['top'],i['x1'],i['bottom']]
+            else:
+                parser.error('Image placement is ambiguous; supply --bbox for the intended placement')
         else:
             if not args.bbox:parser.error('crop requires --bbox')
             x0,top,x1,bottom=args.bbox
@@ -39,6 +47,11 @@ def main():
             rendered=page.crop(tuple(args.bbox)).to_image(resolution=args.dpi)
             rendered.save(str(args.output),quantize=False)
             size=rendered.original.size
+            box=args.bbox
+        if not(0<=box[0]<box[2]<=page.width and 0<=box[1]<box[3]<=page.height):
+            parser.error('bbox outside page or empty')
+        layout={'source_page':args.page,'source_bbox_pt':box,'width_pt':box[2]-box[0]}
+        args.output.with_suffix('.layout.json').write_text(json.dumps(layout,ensure_ascii=False),encoding='utf-8')
         print(json.dumps({'output':str(args.output.resolve()),'pixels':size,'mode':args.mode},ensure_ascii=False))
 
 if __name__=='__main__':main()

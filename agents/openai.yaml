@@ -1,6 +1,7 @@
 interface:
-  display_name: "Paper Translation · HTML Reader"
-  short_description: "Chinese paper translations with original figures and zoom"
-  default_prompt: "Use $paper-translate-html to translate this paper into Simplified Chinese and create an HTML reader with high-resolution original English figures and tables."
+  display_name: "Paper Translation · PDF & HTML"
+  short_description: "Efficient Chinese paper translations with original figures"
+  default_prompt: "Use $paper-translate-html to translate this paper into Simplified Chinese and deliver a searchable PDF, preserving original figures, display sizes, and source typography where practical."
 policy:
   allow_implicit_invocation: true
+

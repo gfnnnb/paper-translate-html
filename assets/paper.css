@@ -1,0 +1,15 @@
+/* Neutral fallback. Use --style-css for typography inspected in the source PDF. */
+:root {
+  --paper-font: "Times New Roman", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+  --paper-heading-font: var(--paper-font);
+  --paper-color: #000000;
+  --paper-heading-color: var(--paper-color);
+  --paper-link-color: var(--paper-color);
+}
+main { font-family: var(--paper-font); color: var(--paper-color); background: white; }
+main h1,main h2,main h3,main h4 { font-family: var(--paper-heading-font); color: var(--paper-heading-color); border: 0; letter-spacing: normal; }
+main a { color: var(--paper-link-color); }
+main blockquote { color: inherit; background: transparent; border: 0; }
+main .figure { border: 0; background: transparent; padding: 0; }
+.figure img { width: var(--figure-width,100mm); max-width: 100%; height: auto; }
+.reader-header { display: none; }

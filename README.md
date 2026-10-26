@@ -1,115 +1,101 @@
 # paper-translate-html
 
-**Translate the paper. Keep the figures. Open one HTML file.**
+**快速翻译，高效排版。保留原图，交付可直接阅读的中文 PDF。**
 
-A Codex skill that turns English research papers into readable Chinese HTML documents. Less copying and formatting, more time for reading.
+A lightweight, efficient Codex skill for full-paper Chinese translations, searchable PDFs, and original figures.
 
-![Paper Reader: a calm reading layout with chapter navigation and original figures](docs/preview-reading.png)
+把英文论文交给 Codex，完成全文翻译、原图表提取和排版检查，默认只交付一份可搜索、可复制的中文 PDF。需要离线网页阅读时，也可以生成带目录和图片缩放的独立 HTML。
 
-[Explore the demo](examples/demo-zh.html) · [Compare the source](examples/source-en.md) · [Workflow guide](references/workflow.md)
+## 为什么快速、高效
 
-## What you get
+- **原图直接复用。** 优先提取高清原图；复合图和表格按完整区域截图，减少重绘和数据重录。
+- **翻译一次，排版复用。** 译稿与排版分开，调整字体、图表大小和分页无需重新翻译，也不逐页生成图片。
+- **脚本完成重复工作。** 本地脚本负责图片嵌入、尺寸传递和 PDF 导出，让时间集中在翻译与必要核验上。
+- **交付简单。** 默认只给最终 PDF，不附带制作说明、译者备注或多余文件包。
 
-- **Complete translations:** covers the main text and appendices by default, preserving structure, numbering, and academic meaning.
-- **Original figures and tables:** preserves English labels, extracts original images where possible, and renders composite figures at high resolution.
-- **Comfortable reading:** chapter navigation, responsive layouts, click-to-zoom, and original-size viewing.
-- **Simple delivery:** text, images, styles, and the image viewer bundled into one HTML file for offline reading.
+这里的“快速、高效”指减少重复处理；实际耗时取决于论文长度、扫描质量、图表复杂度和所用模型，没有固定的分钟数或速度倍数承诺。
 
-The AI assistant performs the translation. The scripts extract visual assets and package the prepared content; this is not a standalone translation model and requires no separate translation API configuration.
+## 保留论文该有的样子
 
-## Preview
+**完整内容。** 默认覆盖所提供文件的正文和附录，保留章节、公式、数值、编号及参考文献，不用摘要替代全文。
 
-These examples use original English and Chinese demonstration material created for this repository. All data are fictional, not research findings or performance benchmarks. Chinese text in the screenshots demonstrates the translated output.
+**高清原图表。** 保留英文图表内部文字与原色，正文和图注翻译为中文，放大查看时仍有原始细节。
 
-### Original English figures and tables
+**小图不强行放大。** 正文采用便于中文阅读的单栏排版；图表沿用原 PDF 的实际显示宽度。原稿小图保持小尺寸，大图最多占满正文，显示大小与像素分辨率分开控制。
 
-![High-resolution English table preserved in the translation](docs/preview-table.png)
+**字体与配色尽量跟随原稿。** 核对衬线风格、标题、粗体、斜体、修订颜色和链接颜色，再应用论文专属样式。中文使用风格接近的可用字体；不强求逐页复刻，也不声称替代字体完全一致。
 
-### Zoom into details, or read on a narrow screen
+**可保存、可打印。** PDF 包含可搜索的正文、页码和章节书签，导出后检查完整性、嵌入字体、分页及密集图表。
 
-![Image viewer with zoom controls](docs/preview-zoom.png)
+翻译由使用该 Skill 的 AI 助手完成。脚本负责提取、排版和导出，本仓库不是独立翻译模型，无需另外配置翻译 API。
 
-Download the [HTML demo](examples/demo-zh.html) and open it in your browser. GitHub's file view displays the source code. Compare the [English source](examples/source-en.md) with the [Chinese translation](examples/demo-zh.md).
+## 安装
 
-## Installation
+将仓库克隆到 Codex 的 skills 目录。若配置了 `CODEX_HOME`，使用其 `skills` 子目录；已有同名 Skill 时先备份或克隆到其他目录。
 
-Clone this repository into your Codex skills directory. If you have configured `CODEX_HOME`, use its `skills` subdirectory instead of the default paths below.
-
-Windows PowerShell:
+Windows PowerShell：
 
 ```powershell
 git clone https://github.com/gfnnnb/paper-translate-html.git "$HOME/.codex/skills/paper-translate-html"
 cd "$HOME/.codex/skills/paper-translate-html"
 npm install
 python -m pip install -r requirements.txt
+npx playwright install chromium
 ```
 
-macOS / Linux:
+macOS / Linux：
 
 ```bash
 git clone https://github.com/gfnnnb/paper-translate-html.git ~/.codex/skills/paper-translate-html
 cd ~/.codex/skills/paper-translate-html
 npm install
 python -m pip install -r requirements.txt
+npx playwright install chromium
 ```
 
-Requires Node.js 20+ and Python 3.10+. Use a Python virtual environment where appropriate, or reuse compatible dependencies already provided by your assistant environment. If a skill with this name already exists, back it up or clone into another directory. Start a new Codex session to use the skill.
+需要 Node.js 20+、Python 3.10+。可使用 Python 虚拟环境，或复用助手环境已有的依赖。已有兼容 Chromium／Edge 时可通过 `--browser-path` 指定，无需重复下载浏览器。安装后开启新的 Codex 会话。
 
-Reading the generated HTML requires only a browser.
+## 使用
 
-## Usage
-
-Provide a PDF to your assistant and ask:
+上传论文 PDF，然后告诉助手：
 
 ```text
-Use $paper-translate-html to translate this entire paper into Simplified Chinese
-and create an HTML reader. Preserve high-resolution English figures and tables,
-with click-to-zoom viewing.
+使用 $paper-translate-html 完整翻译这篇论文，交付中文 PDF。
+保留高清英文原图表，图片按原稿尺寸排版，字体和颜色尽量与原文一致。
 ```
 
-You can also request a specific section or an editable Markdown copy. Your requested scope takes priority over the default full-paper translation.
+也可明确要求 HTML 阅读版、指定章节或可编辑 Markdown；用户指定的范围和格式优先。
 
-To try the included demo:
+基本制作流程：
 
 ```bash
-npm run demo
+# 先由助手核对原文、提取图表并完成译稿
+node scripts/build_html.cjs --input tmp/paper-zh.md --output tmp/paper-zh.html --style-css tmp/source-style.css
+node scripts/export_pdf.cjs --input tmp/paper-zh.html --output output/paper-zh.pdf
 npm test
 ```
 
-Open `examples/demo-zh.html`. See the [workflow guide](references/workflow.md) for figure extraction and custom build commands.
+`source-style.css` 由助手根据原稿编写，可省略以使用黑色衬线回退样式。图表提取脚本自动生成 `.layout.json` 保存原稿显示尺寸，构建和导出时沿用。完整参数及检查方法见 [工作流](references/workflow.md)。
 
-## How it works
+## HTML 阅读效果示例
 
-| Step | What happens |
-| --- | --- |
-| Read | The assistant checks the PDF's structure, reading order, and figure boundaries. |
-| Translate | It translates the requested text and captions while preserving values, references, and original visuals. |
-| Package | Local scripts bundle the prepared Markdown and images into a standalone reader. |
-| Verify | The assistant checks coverage, visual quality, image zoom, and desktop and mobile layouts. |
+以下是早期 HTML 阅读器的效果示例，展示章节导航、原图表和图片放大功能。它们不是新版 PDF 的字体与排版预览；实际输出样式以所提供论文为准。示例文字和图表为仓库原创演示材料，数据均为虚构。
 
-The default output language is Simplified Chinese. Repository documentation is in English; Chinese text in the demo shows the actual translation output.
+![早期 HTML 阅读器示例](docs/preview-reading.png)
 
-## Rebuild the previews
+[英文示例](examples/source-en.md) · [中文译稿](examples/demo-zh.md) · [HTML 演示](examples/demo-zh.html)
 
-The preview cards contain actual browser screenshots of the bundled demo. To regenerate them after changing the reader:
+下载 HTML 文件后用浏览器打开；GitHub 文件页面显示的是源码。运行 `npm run demo` 可使用当前模板重新生成演示。重新生成预览截图可运行 `node scripts/capture_preview.cjs`。
 
-```bash
-npm run demo
-npm install --no-save playwright
-npx playwright install chromium
-node scripts/capture_preview.cjs
-```
+## 边界
 
-The optional capture script also checks image loading, original-size viewing, zoom controls, scrolling, mobile navigation, and closing the viewer. Playwright is only needed to regenerate previews.
+- 扫描版 PDF 需要额外 OCR 和复核，本仓库不内置 OCR。
+- 复杂 LaTeX 公式需要另行配置并核验数学渲染，不能直接交付未渲染代码。
+- 放大不能恢复低清原图缺失的细节。字体匹配受本机字体可用性限制。
+- 完整性、译文准确性及局部强调的保留需要助手检查，脚本本身不提供自动保证。
+- 原始 Markdown 内的 HTML 显示为文本，远程或缺失图片会使构建失败。
 
-## Limitations
+## 许可
 
-- Scanned PDFs require additional OCR and checking; OCR is not included.
-- Plain Unicode equations display directly. Complex LaTeX requires a separately configured and verified math renderer.
-- Enlarging a low-resolution source cannot restore missing details. Many embedded high-resolution images can make the HTML file large.
-- Raw manuscript HTML is displayed as text. Missing or remote images cause the build to fail.
-- AI translations still need checks for terminology, numerical values, and complex layouts. Completeness checks are part of the skill workflow, not an automatic guarantee from the scripts.
+代码、文档及原创示例采用 [MIT License](LICENSE)。用户提供的论文、图表及其他第三方材料不包含在该许可中；再分发译文时须遵守相应授权。
 
-## License
-
-Code, documentation, and original demo materials are available under the [MIT License](LICENSE). This license does not cover user-supplied papers, figures, or other third-party material. Check the relevant permissions before redistributing translations.

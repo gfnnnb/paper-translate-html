@@ -1,8 +1,8 @@
 {
   "name": "paper-translate-html",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Complete Chinese paper translations with original figures in a standalone HTML reader.",
+  "description": "Fast, efficient paper translation workflows with searchable PDFs and original figures.",
   "license": "MIT",
   "engines": {
     "node": ">=20"
@@ -12,7 +12,9 @@
     "test": "node --test tests/build_html.test.cjs"
   },
   "dependencies": {
-    "marked": "17.0.5"
+    "marked": "17.0.5",
+    "playwright": "^1.56.0"
   }
 }
+
 
